@@ -1,0 +1,90 @@
+ContextMap {
+    type = ORGANIZATIONAL
+    contains EasyBooksTeam, ContractorTeam // teams
+    contains OrderManagementContext, PaymentContext, DealFindingContext, AmazonCatalogContext, BolCatalogContext // BCs
+
+    EasyBooksTeam [P]<->[P] ContractorTeam
+
+    OrderManagementContext [SK]<->[SK] DealFindingContext
+
+    OrderManagementContext [C]<-[S, PL] PaymentContext
+
+    DealFindingContext [ACL]<-[OHS] AmazonCatalogContext
+
+    DealFindingContext [ACL]<- BolCatalogContext
+}
+
+BoundedContext ContractorTeam realizes PaymentContext {
+    type = TEAM
+    domainVisionStatement = "Team responsible for supporting subdomain"
+}
+
+BoundedContext EasyBooksTeam  realizes OrderManagementContext, DealFindingContext {
+    type = TEAM
+    domainVisionStatement = "Team responsible for core domain"
+}
+
+BoundedContext AmazonCatalogContext {
+    domainVisionStatement = "Represents Amazon.com catalog"
+}
+
+BoundedContext BolCatalogContext {
+    domainVisionStatement = "Represents Bol.com catalog"
+}
+
+BoundedContext OrderManagementContext implements OrderManagementDomain {
+    domainVisionStatement = "Intake and processing of book ordering requests"
+
+    Application DomainServices {
+        Service ExampleService {
+            void f();
+        }
+    }
+
+    Aggregate Customer {
+        Entity Customer {
+            aggregateRoot
+
+            - @ContactDetails contactDetails
+
+            * ^create(String ^email);
+        }
+
+        ValueObject ContactDetails {
+            String ^email
+            - @Address address
+        }
+
+        ValueObject Address {
+            String street
+            int houseNumber
+            String city
+        }
+    }
+
+    Module SharedKernel {
+    }
+}
+
+BoundedContext DealFindingContext implements DealFindingDomain {
+    domainVisionStatement = "Finding best book deal at online retailers"
+}
+
+BoundedContext PaymentContext implements PaymentDomain {
+    domainVisionStatement = "Administration and management of payments"
+}
+
+Domain EasyBooks {
+    Subdomain OrderManagementDomain {
+        type = SUPPORTING_DOMAIN
+    }
+
+    Subdomain PaymentDomain {
+        type = GENERIC_SUBDOMAIN
+    }
+
+    Subdomain DealFindingDomain {
+        type = CORE_DOMAIN
+    }
+
+}

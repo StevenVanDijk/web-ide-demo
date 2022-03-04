@@ -1,0 +1,1 @@
+plantuml -pipe < $1 > $2
