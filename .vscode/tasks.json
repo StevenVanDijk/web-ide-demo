@@ -9,6 +9,9 @@
                 "src-gen/EasyBooks_BC_OrderManagementContext.png"
             ],
             "type": "shell",
+            "presentation": {
+                "reveal": "never",
+            },
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -25,6 +28,9 @@
                 "src-gen/EasyBooks_BC_OrderManagementContext.puml",
                 "src-gen/tmp.png"
             ],
+            "presentation": {
+                "reveal": "never",
+            },
             "dependsOn": [
                 "Generate PUML"
             ]
@@ -32,7 +38,10 @@
         {
             "label": "Generate PUML",
             "command": "${command:cml.generate.puml.proxy}",
-            "group": "build"
-        }
+            "group": "build",
+            "presentation": {
+                "reveal": "never",
+            },
+       }
     ]
 }
