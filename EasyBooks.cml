@@ -3,75 +3,21 @@ ContextMap {
     contains EasyBooksTeam, ContractorTeam // teams
     contains OrderManagementContext, PaymentContext, DealFindingContext, AmazonCatalogContext, BolCatalogContext // BCs
 
-    EasyBooksTeam [P]<->[P] ContractorTeam
-
-    OrderManagementContext [SK]<->[SK] DealFindingContext
-
-    OrderManagementContext [C]<-[S, PL] PaymentContext
-
-    DealFindingContext [ACL]<-[OHS] AmazonCatalogContext
-
-    DealFindingContext [ACL]<- BolCatalogContext
 }
 
-BoundedContext ContractorTeam realizes PaymentContext {
-    type = TEAM
-    domainVisionStatement = "Team responsible for supporting subdomain"
-}
+BoundedContext ContractorTeam realizes PaymentContext { type = TEAM }
 
-BoundedContext EasyBooksTeam  realizes OrderManagementContext, DealFindingContext {
-    type = TEAM
-    domainVisionStatement = "Team responsible for core domain"
-}
+BoundedContext EasyBooksTeam  realizes OrderManagementContext, DealFindingContext { type = TEAM }
 
-BoundedContext AmazonCatalogContext {
-    domainVisionStatement = "Represents Amazon.com catalog"
-}
+BoundedContext AmazonCatalogContext
 
-BoundedContext BolCatalogContext {
-    domainVisionStatement = "Represents Bol.com catalog"
-}
+BoundedContext BolCatalogContext
 
-BoundedContext OrderManagementContext implements OrderManagementDomain {
-    domainVisionStatement = "Intake and processing of book ordering requests"
+BoundedContext OrderManagementContext implements OrderManagementDomain
 
-    Application DomainServices {
-        Service ExampleService {
-        }
-    }
+BoundedContext DealFindingContext implements DealFindingDomain
 
-    Aggregate Customer {
-        Entity Customer {
-            aggregateRoot
-
-            - @ContactDetails contactDetails
-
-            * ^create(String ^email);
-        }
-
-        ValueObject ContactDetails {
-            String ^email
-            - @Address address
-        }
-
-        ValueObject Address {
-            String street
-            int houseNumber
-            String city
-        }
-    }
-
-    Module SharedKernel {
-    }
-}
-
-BoundedContext DealFindingContext implements DealFindingDomain {
-    domainVisionStatement = "Finding best book deal at online retailers"
-}
-
-BoundedContext PaymentContext implements PaymentDomain {
-    domainVisionStatement = "Administration and management of payments"
-}
+BoundedContext PaymentContext implements PaymentDomain
 
 Domain EasyBooks {
     Subdomain OrderManagementDomain {
