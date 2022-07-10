@@ -1,0 +1,27 @@
+ContextMap {
+   	type = ORGANIZATIONAL
+    
+    contains UpstreamBC, DownstreamBC, CustomerBC, SupplierBC, PartnerBC, OtherPartnerBC, TeamBC, OtherTeamBC
+
+    UpstreamBC [U]->[D] DownstreamBC
+
+    CustomerBC [C]<-[S] SupplierBC
+
+    PartnerBC [P]<->[P] OtherPartnerBC
+}
+
+BoundedContext UpstreamBC { type = TEAM }
+
+BoundedContext DownstreamBC { type = TEAM }
+
+BoundedContext CustomerBC { type = TEAM }
+
+BoundedContext SupplierBC { type = TEAM }
+
+BoundedContext PartnerBC { type = TEAM }
+
+BoundedContext OtherPartnerBC { type = TEAM }
+
+BoundedContext TeamBC { type = TEAM }
+
+BoundedContext OtherTeamBC { type = TEAM }

@@ -1,0 +1,21 @@
+ContextMap {
+    contains CorruptingBC, AntiCorruptingBC, HostServiceBC, ClientBC, WithLanguageBC, UsingLanguageBC
+
+    CorruptingBC ->[ACL] AntiCorruptingBC
+
+    HostServiceBC [OHS]-> ClientBC
+
+    WithLanguageBC [PL]-> UsingLanguageBC
+}
+
+BoundedContext CorruptingBC
+
+BoundedContext AntiCorruptingBC
+
+BoundedContext HostServiceBC
+
+BoundedContext ClientBC
+
+BoundedContext WithLanguageBC
+
+BoundedContext UsingLanguageBC

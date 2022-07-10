@@ -1,0 +1,15 @@
+ContextMap {  
+    contains DictatorBC, ConformerBC, ParticipantBC, OtherBC
+
+    DictatorBC [U]->[D,CF] ConformerBC
+
+    ParticipantBC [SK]<->[SK] OtherBC
+}
+
+BoundedContext DictatorBC
+
+BoundedContext ConformerBC
+
+BoundedContext ParticipantBC
+
+BoundedContext OtherBC
