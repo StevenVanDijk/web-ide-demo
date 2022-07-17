@@ -1,0 +1,53 @@
+ContextMap {
+    contains MyContext
+}
+
+BoundedContext MyContext {
+
+	Aggregate Meal {
+        Entity Order {
+            aggregateRoot
+
+            -List<@Egg> eggs
+            -Euro price
+
+            * ^create(@EggType eggType, int numberOfSaltGrains, int boilTimeInMinutes);
+            * void addToOrder(@EggType eggType, int numberOfSaltGrains, int boilTimeInMinutes);
+        }
+
+        Entity Egg {
+            -Duration boilTime
+            -Salt salt
+            -EggType eggType
+
+            * ^create(@EggType eggType, @Duration duration);
+            * void boilEgg();
+            * void applySalt(@Salt salt);
+        }
+
+        ValueObject Duration {
+            int nrOfMinutes
+            int nrOfSeconds
+        }
+
+        enum EggType {
+            Chicken,
+            Turtle
+        }
+
+        ValueObject Salt {
+            int numberOfGrains
+        }
+
+        ValueObject Euro {
+            int whole
+            int cents
+        }
+	}
+
+	Application App {
+        Service DomainService {
+            void placeOrder(@Order order);
+        }
+	}
+}
