@@ -8,6 +8,7 @@ tasks:
           sleep 1
       done
       sleep 1
+      rm /workspace/.vscode-remote/extensions/contextmapper.context-mapper-vscode-extension-6.6.1/lsp/lib/context-mapper-dsl-6.6.1.jar
       cp -vR context-mapper-dsl-6.6.2-SNAPSHOT/* /workspace/.vscode-remote/extensions/contextmapper.context-mapper-vscode-extension-6.6.1/lsp
 image:
   file: .gitpod.Dockerfile
