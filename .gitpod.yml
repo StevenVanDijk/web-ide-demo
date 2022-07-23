@@ -1,8 +1,14 @@
 tasks:
-  - init: | 
-      ls -alR /workspace/.vscode-remote/extensions/contextmapper.context-mapper-vscode-extension-6.6.1/lsp
-      cp -vR context-mapper-dsl-6.6.2-SNAPSHOT/* /workspace/.vscode-remote/extensions/contextmapper.context-mapper-vscode-extension-6.6.1/lsp
+  - init: |       
       ./gradlew clean build
+    command: |
+      # dirty hack to overwrite implementation of context-mapper extension with version from 6.6.2 snapshot
+      until [ -d /workspace/.vscode-remote/extensions/contextmapper.context-mapper-vscode-extension-6.6.1/lsp ]
+      do
+          sleep 1
+      done
+      sleep 1
+      cp -vR context-mapper-dsl-6.6.2-SNAPSHOT/* /workspace/.vscode-remote/extensions/contextmapper.context-mapper-vscode-extension-6.6.1/lsp
 image:
   file: .gitpod.Dockerfile
 vscode:
