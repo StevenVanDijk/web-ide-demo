@@ -1,0 +1,63 @@
+ContextMap {
+	contains EggsContext
+}
+
+BoundedContext EggsContext {
+    Aggregate Table {
+        Entity Table {
+            int nr
+            -Order currentOrder
+
+            * void createNewOrder();
+            * @Order getCurrentOrder();
+            * void clearOrder();
+        }
+    }
+
+    Aggregate Customer {
+        Entity Customer {
+            -Table table
+
+            * @EggSpecifics getDesiredEgg();
+        }
+
+        ValueObject EggSpecifics {
+            int nrOfGrainsOfSalt;
+            -EggType eggType;
+        }
+    }
+
+    Aggregate Order {   
+        Entity Order {
+            -List<@Egg> eggs;
+
+            * void ^create();
+            * void addEgg(@EggSpecifics specifics);
+        }
+    }
+
+    Aggregate Egg {
+        Entity Egg {
+            -Salt salt
+            -EggType eggType
+
+            * void ^create(@EggType eggType);
+            * void salt(@Salt salt);
+        }
+
+        ValueObject Salt {
+            int nrOfGrains;
+        }
+
+        enum EggType {
+            Chicken,
+            Turtle
+        }       
+    }
+
+    Aggregate Waiter {
+        Entity Waiter {
+            * void startOrder(@Table table);
+        }
+    }
+}
