@@ -16,9 +16,11 @@ BoundedContext EggsContext {
 
     Aggregate Customer {
         Entity Customer {
-            -Table table
+            -Table table -- "sits at"
 
             * @EggSpecifics getDesiredEgg();
+
+            -- "negotiate" @Waiter
         }
 
         ValueObject EggSpecifics {
@@ -58,6 +60,9 @@ BoundedContext EggsContext {
     Aggregate Waiter {
         Entity Waiter {
             * void startOrder(@Table table);
+
+            -- "manages >" @Order
+            -- "oversees >" @Table
         }
     }
 }
