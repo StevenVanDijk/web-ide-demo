@@ -1,9 +1,9 @@
 tasks:
   - init: |       
       ./gradlew clean build
+      code --install-extension ./vscode-extension-6.7.0-SNAPSHOT.vsix 
 image:
   file: .gitpod.Dockerfile
 vscode:
   extensions:
-    - ./vscode-extension-6.7.0-SNAPSHOT.vsix
     - jebbs.plantuml
