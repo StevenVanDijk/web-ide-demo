@@ -13,7 +13,9 @@ BoundedContext AmazonCatalogContext
 
 BoundedContext BolCatalogContext
 
-BoundedContext OrderManagementContext implements OrderManagementDomain
+BoundedContext OrderManagementContext implements OrderManagementDomain {
+    // Create Aggregate here
+}
 
 BoundedContext DealFindingContext implements DealFindingDomain
 
