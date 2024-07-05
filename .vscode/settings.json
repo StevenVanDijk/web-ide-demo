@@ -10,5 +10,6 @@
     },
     "window.autoDetectColorScheme": true,
     "workbench.startupEditor": "none",
-    "terminal.integrated.hideOnStartup": "always"
+    "terminal.integrated.hideOnStartup": "always",
+    "java.compile.nullAnalysis.mode": "disabled"
 }
