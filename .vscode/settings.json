@@ -4,5 +4,8 @@
     "triggerTaskOnSave.showStatusBarToggle": true,
     "triggerTaskOnSave.tasks": {
         "Export PNG from PUML": [ "*.cml" ]
+    },
+    "workbench.editorAssociations": {   
+        "*.md": "vscode.markdown.preview.editor",
     }
 }
