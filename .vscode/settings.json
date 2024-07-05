@@ -1,0 +1,8 @@
+{
+    "triggerTaskOnSave.restart": true,
+    "triggerTaskOnSave.showNotifications": true,
+    "triggerTaskOnSave.showStatusBarToggle": true,
+    "triggerTaskOnSave.tasks": {
+        "Export PNG from PUML": [ "*.cml" ]
+    }
+}

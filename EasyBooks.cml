@@ -13,8 +13,21 @@ BoundedContext AmazonCatalogContext
 
 BoundedContext BolCatalogContext
 
+// See contextmapper-syntax.md for a cheat-sheet on syntax!
+// Press ctrl-s to save and generate a diagram
 BoundedContext OrderManagementContext implements OrderManagementDomain {
-    // Create Aggregate here
+    Aggregate Example {
+        Entity Example {
+            int property;
+            - List<Other> others;
+        }
+    }
+
+    Aggregate Other {
+        Entity Other {
+            int alsoProperty;
+        }
+    }
 }
 
 BoundedContext DealFindingContext implements DealFindingDomain

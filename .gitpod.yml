@@ -1,10 +1,10 @@
 tasks:
   - init: |       
       ./gradlew clean build
-      code --install-extension ./vscode-extension-6.7.0-SNAPSHOT.vsix 
-      chmod a+x /workspace/.vscode-remote/extensions/contextmapper.context-mapper-vscode-extension-6.7.0-SNAPSHOT/lsp/bin/context-mapper-lsp
 image:
   file: .gitpod.Dockerfile
 vscode:
   extensions:
-    - jebbs.plantuml
+    - jebbs.plantuml      
+    - contextmapper.context-mapper-vscode-extension
+    - Gruntfuggly.triggertaskonsave

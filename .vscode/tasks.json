@@ -2,31 +2,15 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Copy PNG",
-            "command": "cp",
-            "args": [
-                "src-gen/tmp.png",
-                "src-gen/EasyBooks_BC_OrderManagementContext.png"
-            ],
+            "label": "Export PNG from PUML",
             "type": "shell",
-            "presentation": {
-                "reveal": "never",
-            },
+            "command": "./plantumlRedirect.cmd",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "dependsOn": [
-                "Export PNG from PUML"
-            ]
-        },
-        {
-            "label": "Export PNG from PUML",
-            "type": "shell",
-            "command": "./plantumlRedirect.cmd",
             "args": [
-                "src-gen/EasyBooks_BC_OrderManagementContext.puml",
-                "src-gen/tmp.png"
+                "${fileBasenameNoExtension}"
             ],
             "presentation": {
                 "reveal": "never",
