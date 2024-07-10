@@ -31,7 +31,7 @@ BoundedContext BolCatalogContext
 //    necessary. Make sure to add any interesting relations.
 // 6. Next, we need to find a good deal but this is delegated to the DealFindingContext. Create a 
 //    service to call the other context. The result from the (synchronous) service call should be a deal that is 
-//    recorded. Assume the deal is always accepted and ordered by the DealFindingContext.
+//    recorded. Make sure to execute the deal (i.e. order at AMZ/Bol).
 //    N.B.: Unfortunately, the tooling doesn't allow specifying relations between an Entity and a Service. :-(
 // 7.
 BoundedContext OrderManagementContext implements OrderManagementDomain {
