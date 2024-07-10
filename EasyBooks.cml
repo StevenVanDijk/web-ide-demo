@@ -21,7 +21,10 @@ BoundedContext BolCatalogContext
 // 1. Model my mother (or anyone else) contacting me. Make sure you can get back in touch with them.
 // 2. Model the request the Customer makes of us. Think about the specifics of the thing they want.
 // 3. Model me (or someone in my role).
-// 4.
+// 4. With Customer, Order and SalesPerson in place, we should have all the nouns. Now let's flesh out behavior.
+//    Assume I am authenticated in the system as a specific SalesPerson. Someone calls me. Either this is an 
+//    existing customer that we look up, or we should create a new one. This does not require new entities or
+//    methods. But we need to annotate the diagram with new relations. (Hint: use "-- " syntax.)
 // 5.
 // 6.
 // 7.
