@@ -31,10 +31,16 @@ BoundedContext BolCatalogContext
 //    necessary. Make sure to add any interesting relations.
 // 6. Next, we need to find a good deal but this is delegated to the DealFindingContext. Create a 
 //    service to call the other context. The result from the (synchronous) service call should be a deal that is 
-//    recorded. Assume the deal is always accepted and ordered by the DealFindingContext.
+//    recorded. Make sure to execute the deal (i.e. order at AMZ/Bol).
 //    N.B.: Unfortunately, the tooling doesn't allow specifying relations between an Entity and a Service. :-(
-// 7.
+// 7. Finish remaining loose ends as you see fit, you know all the tools now!
 BoundedContext OrderManagementContext implements OrderManagementDomain {
+    Application Services {
+        Service DealFindingService {
+            @Deal findDeal(@Book book);
+            void processFoundDeal(@Deal deal);
+        }
+    }
     Aggregate Salesperson {
         Entity SalesPerson {
             String name
@@ -47,6 +53,7 @@ BoundedContext OrderManagementContext implements OrderManagementDomain {
             -- "accepts new >" @Order
             -- "fulfills >" @Order
             -- "records delivery >" @Order
+            -- "gets from DealFindingService >" @Deal
         }
     }
     Aggregate Order {
@@ -55,9 +62,9 @@ BoundedContext OrderManagementContext implements OrderManagementDomain {
             - @Customer customer
             - @Book book
             - @OrderState orderState
-
+            - @Deal deal
             * void ^create(@Customer customer, String title, @ISBN isbn);
-            * void fullfill();
+            * void fullfill(@Deal deal);
             * void setDelivered();
             * void close();
         }
@@ -76,6 +83,18 @@ BoundedContext OrderManagementContext implements OrderManagementDomain {
         enum OrderState {
             ACCEPTED, FULFILLED, DELIVERED, CLOSED
         }
+        ValueObject Deal {
+            - @Book book
+            - Money price
+        }
+        ValueObject Money {
+            int amount
+            - @Currency currency
+        }
+        enum Currency {
+            EURO, BITCOIN
+        }
+
     }
     Aggregate Customer {
         Entity Customer {
