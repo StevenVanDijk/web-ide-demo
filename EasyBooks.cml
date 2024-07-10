@@ -2,12 +2,15 @@ ContextMap {
     type = ORGANIZATIONAL
     contains EasyBooksTeam, ContractorTeam // teams
     contains OrderManagementContext, PaymentContext, DealFindingContext, AmazonCatalogContext, BolCatalogContext // BCs
-
 }
 
-BoundedContext ContractorTeam realizes PaymentContext { type = TEAM }
+BoundedContext ContractorTeam realizes PaymentContext {
+    type = TEAM
+}
 
-BoundedContext EasyBooksTeam  realizes OrderManagementContext, DealFindingContext { type = TEAM }
+BoundedContext EasyBooksTeam  realizes OrderManagementContext, DealFindingContext {
+    type = TEAM
+}
 
 BoundedContext AmazonCatalogContext
 
@@ -15,7 +18,6 @@ BoundedContext BolCatalogContext
 
 // See contextmapper-syntax.md for a cheat-sheet on syntax!
 // Press ctrl-s to save and generate a diagram EasyBooks_BC_OrderManagementContext.png. Dock it next to this file.
-
 // 1. Model my mother (or anyone else) contacting me. Make sure you can get back in touch with them.
 // 2. Model the request the Customer makes of us. Think about the specifics of the thing they want.
 // 3. Model me (or someone in my role).
@@ -24,6 +26,11 @@ BoundedContext BolCatalogContext
 // 6.
 // 7.
 BoundedContext OrderManagementContext implements OrderManagementDomain {
+    Aggregate Salesperson {
+        Entity SalesPerson {
+            String name
+        }
+    }
     Aggregate Order {
         Entity Order {
             aggregateRoot
@@ -84,3 +91,4 @@ Domain EasyBooks {
     }
 
 }
+
