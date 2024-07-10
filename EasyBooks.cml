@@ -2,19 +2,35 @@ ContextMap {
     type = ORGANIZATIONAL
     contains EasyBooksTeam, ContractorTeam // teams
     contains OrderManagementContext, PaymentContext, DealFindingContext, AmazonCatalogContext, BolCatalogContext // BCs
+
+    EasyBooksTeam [P]<->[P] ContractorTeam
+
+    OrderManagementContext [SK]<->[SK] DealFindingContext
+
+    OrderManagementContext [C]<-[S, PL] PaymentContext
+
+    DealFindingContext [ACL]<-[OHS] AmazonCatalogContext
+
+    DealFindingContext [ACL]<- BolCatalogContext
 }
 
 BoundedContext ContractorTeam realizes PaymentContext {
     type = TEAM
+    domainVisionStatement = "Team responsible for supporting subdomain"
 }
 
 BoundedContext EasyBooksTeam  realizes OrderManagementContext, DealFindingContext {
     type = TEAM
+    domainVisionStatement = "Team responsible for core domain"
 }
 
-BoundedContext AmazonCatalogContext
+BoundedContext AmazonCatalogContext {
+    domainVisionStatement = "Represents Amazon.com catalog"
+}
 
-BoundedContext BolCatalogContext
+BoundedContext BolCatalogContext {
+    domainVisionStatement = "Represents Bol.com catalog"
+}
 
 // See contextmapper-syntax.md for a cheat-sheet on syntax!
 // Press ctrl-s to save and generate a diagram EasyBooks_BC_OrderManagementContext.png. Dock it next to this file.
@@ -35,10 +51,16 @@ BoundedContext BolCatalogContext
 //    N.B.: Unfortunately, the tooling doesn't allow specifying relations between an Entity and a Service. :-(
 // 7. Finish remaining loose ends as you see fit, you know all the tools now!
 BoundedContext OrderManagementContext implements OrderManagementDomain {
+    domainVisionStatement = "Intake and processing of book ordering requests"
+
     Application Services {
         Service DealFindingService {
             @Deal findDeal(@Book book);
             void processFoundDeal(@Deal deal);
+        }
+        Service PaymentService {
+            void requestPayment(@Order order);
+            bool confirmPayment(@Order order);
         }
     }
     Aggregate Salesperson {
@@ -47,6 +69,7 @@ BoundedContext OrderManagementContext implements OrderManagementDomain {
             * void acceptOrder(@Customer customer, @Book book);
             * void fulfillOrder(@Order order);
             * void recordDelivery(@Order order);
+            * void requestPayment(@Order order);
             * void closeOrder(@Order order);
             -- "looks up >" @Customer
             -- "creates new >" @Customer
@@ -67,6 +90,7 @@ BoundedContext OrderManagementContext implements OrderManagementDomain {
             * void fullfill(@Deal deal);
             * void setDelivered();
             * void close();
+            * @Money calculateTotalPrice();
         }
         ValueObject Book {
             String title
@@ -94,7 +118,6 @@ BoundedContext OrderManagementContext implements OrderManagementDomain {
         enum Currency {
             EURO, BITCOIN
         }
-
     }
     Aggregate Customer {
         Entity Customer {
@@ -118,9 +141,13 @@ BoundedContext OrderManagementContext implements OrderManagementDomain {
     }
 }
 
-BoundedContext DealFindingContext implements DealFindingDomain
+BoundedContext DealFindingContext implements DealFindingDomain {
+    domainVisionStatement = "Finding best book deal at online retailers"
+}
 
-BoundedContext PaymentContext implements PaymentDomain
+BoundedContext PaymentContext implements PaymentDomain {
+    domainVisionStatement = "Administration and management of payments"
+}
 
 Domain EasyBooks {
     Subdomain OrderManagementDomain {
