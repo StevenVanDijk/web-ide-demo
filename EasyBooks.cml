@@ -14,7 +14,7 @@ BoundedContext AmazonCatalogContext
 BoundedContext BolCatalogContext
 
 // See contextmapper-syntax.md for a cheat-sheet on syntax!
-// Press ctrl-s to save and generate a diagram
+// Press ctrl-s to save and generate a diagram EasyBooks_BC_OrderManagementContext.png. Dock it next to this file.
 
 // 1. Model my mother (or anyone else) contacting me. Make sure you can get back in touch with them.
 // 2.
