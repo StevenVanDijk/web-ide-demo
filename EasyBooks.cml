@@ -18,12 +18,32 @@ BoundedContext BolCatalogContext
 
 // 1. Model my mother (or anyone else) contacting me. Make sure you can get back in touch with them.
 // 2. Model the request the Customer makes of us. Think about the specifics of the thing they want.
-// 3.
+// 3. Model me (or someone in my role).
 // 4.
 // 5.
 // 6.
 // 7.
 BoundedContext OrderManagementContext implements OrderManagementDomain {
+    Aggregate Order {
+        Entity Order {
+            aggregateRoot
+            - @Customer customer
+            - @Book book
+            * void ^create(@Customer customer, String title, @ISBN isbn);
+        }
+        ValueObject Book {
+            String title
+            - @ISBN isbn
+        }
+        ValueObject ISBN {
+            int gs2
+            int group
+            int registrant
+            int publication
+            int check
+            * @ISBN ^create(String isbn);
+        }
+    }
     Aggregate Customer {
         Entity Customer {
             aggregateRoot
