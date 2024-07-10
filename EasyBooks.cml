@@ -29,14 +29,24 @@ BoundedContext BolCatalogContext
 //    accepted to take care of finding a deal for a book and delivering it. So next we will find and fullfill
 //    a deal, deliver it to the customer and get paid. Then we are done. Model these states and any methods
 //    necessary. Make sure to add any interesting relations.
-// 6.
+// 6. Next, we need to find a good deal but this is delegated to the DealFindingContext. Create a 
+//    service to call the other context. The result from the (synchronous) service call should be a deal that is 
+//    recorded. Assume the deal is always accepted and ordered by the DealFindingContext.
+//    N.B.: Unfortunately, the tooling doesn't allow specifying relations between an Entity and a Service. :-(
 // 7.
 BoundedContext OrderManagementContext implements OrderManagementDomain {
     Aggregate Salesperson {
         Entity SalesPerson {
             String name
+            * void acceptOrder(@Customer customer, @Book book);
+            * void fulfillOrder(@Order order);
+            * void recordDelivery(@Order order);
+            * void closeOrder(@Order order);
             -- "looks up >" @Customer
             -- "creates new >" @Customer
+            -- "accepts new >" @Order
+            -- "fulfills >" @Order
+            -- "records delivery >" @Order
         }
     }
     Aggregate Order {
@@ -44,7 +54,12 @@ BoundedContext OrderManagementContext implements OrderManagementDomain {
             aggregateRoot
             - @Customer customer
             - @Book book
+            - @OrderState orderState
+
             * void ^create(@Customer customer, String title, @ISBN isbn);
+            * void fullfill();
+            * void setDelivered();
+            * void close();
         }
         ValueObject Book {
             String title
@@ -57,6 +72,9 @@ BoundedContext OrderManagementContext implements OrderManagementDomain {
             int publication
             int check
             * @ISBN ^create(String isbn);
+        }
+        enum OrderState {
+            ACCEPTED, FULFILLED, DELIVERED, CLOSED
         }
     }
     Aggregate Customer {
