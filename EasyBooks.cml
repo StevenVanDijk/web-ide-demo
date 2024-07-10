@@ -15,6 +15,14 @@ BoundedContext BolCatalogContext
 
 // See contextmapper-syntax.md for a cheat-sheet on syntax!
 // Press ctrl-s to save and generate a diagram
+
+// 1. Model my mother (or anyone else) contacting me. Make sure you can get back in touch with them.
+// 2.
+// 3.
+// 4.
+// 5.
+// 6.
+// 7.
 BoundedContext OrderManagementContext implements OrderManagementDomain {
     Aggregate Example {
         Entity Example {
