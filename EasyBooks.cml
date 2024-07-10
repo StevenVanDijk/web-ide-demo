@@ -25,13 +25,18 @@ BoundedContext BolCatalogContext
 //    Assume I am authenticated in the system as a specific SalesPerson. Someone calls me. Either this is an 
 //    existing customer that we look up, or we should create a new one. This does not require new entities or
 //    methods. But we need to annotate the diagram with new relations. (Hint: use "-- " syntax.)
-// 5.
+// 5. The Order has several states, depending where in the order fulfillment process we are. When the order is created, 
+//    it is ACCEPTED. Next, we need to find a good deal but this is delegated to the DealFindingContext. Create a 
+//    service to call the other context. The result from the service call should be a deal that is recorded.
+//    N.B.: Unfortunately, the tooling doesn't allow specifying relations between an Entity and a Service. 
 // 6.
 // 7.
 BoundedContext OrderManagementContext implements OrderManagementDomain {
     Aggregate Salesperson {
         Entity SalesPerson {
             String name
+            -- "looks up >" @Customer
+            -- "creates new >" @Customer
         }
     }
     Aggregate Order {
