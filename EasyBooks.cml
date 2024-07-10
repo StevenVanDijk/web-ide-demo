@@ -17,23 +17,31 @@ BoundedContext BolCatalogContext
 // Press ctrl-s to save and generate a diagram EasyBooks_BC_OrderManagementContext.png. Dock it next to this file.
 
 // 1. Model my mother (or anyone else) contacting me. Make sure you can get back in touch with them.
-// 2.
+// 2. Model the request the Customer makes of us. Think about the specifics of the thing they want.
 // 3.
 // 4.
 // 5.
 // 6.
 // 7.
 BoundedContext OrderManagementContext implements OrderManagementDomain {
-    Aggregate Example {
-        Entity Example {
-            int property;
-            - List<Other> others;
+    Aggregate Customer {
+        Entity Customer {
+            aggregateRoot
+            - @ContactDetails contactDetails
+            * ^create(String ^email, String address);
         }
-    }
-
-    Aggregate Other {
-        Entity Other {
-            int alsoProperty;
+        ValueObject ContactDetails {
+            - @Email ^email
+            - @Address address
+        }
+        ValueObject Email {
+            String user
+            String domain
+        }
+        ValueObject Address {
+            String street
+            int houseNumber
+            String city
         }
     }
 }

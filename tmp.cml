@@ -1,0 +1,149 @@
+ContextMap {
+    type = ORGANIZATIONAL
+    contains EasyBooksTeam, ContractorTeam // teams
+    contains OrderManagementContext, PaymentContext, DealFindingContext, AmazonCatalogContext, BolCatalogContext // BCs
+
+    EasyBooksTeam [P]<->[P] ContractorTeam
+
+    OrderManagementContext [SK]<->[SK] DealFindingContext
+
+    OrderManagementContext [C]<-[S, PL] PaymentContext
+
+    DealFindingContext [ACL]<-[OHS] AmazonCatalogContext
+
+    DealFindingContext [ACL]<- BolCatalogContext
+}
+
+BoundedContext ContractorTeam realizes PaymentContext {
+    type = TEAM
+    domainVisionStatement = "Team responsible for supporting subdomain"
+}
+
+BoundedContext EasyBooksTeam  realizes OrderManagementContext, DealFindingContext {
+    type = TEAM
+    domainVisionStatement = "Team responsible for core domain"
+}
+
+BoundedContext AmazonCatalogContext {
+    domainVisionStatement = "Represents Amazon.com catalog"
+}
+
+BoundedContext BolCatalogContext {
+    domainVisionStatement = "Represents Bol.com catalog"
+}
+
+BoundedContext OrderManagementContext implements OrderManagementDomain {
+    domainVisionStatement = "Intake and processing of book ordering requests"
+
+    Aggregate Services {
+        Entity DealFindingService {
+            * @Deal findDeal(@Book book);
+            * void processFoundDeal(@Deal deal);
+        }
+
+        Entity PaymentService {
+            * void requestPayment(@Order order);
+            * void confirmPayment(@Order order);
+        }
+    }
+
+    Aggregate Order {
+        Entity Order {
+            aggregateRoot
+            - @Customer customer
+            - @OrderState orderState
+            - @Deal deal
+            - @Book book
+            * void ^create(@Customer customer, String title, @ISBN isbn);
+            * void fulfill(@Deal deal);
+            * void recordDelivery();
+            * void close();
+            * @Money calculateTotalPrice();
+        }
+        ValueObject Book {
+            String title
+            - @ISBN isbn
+        }
+        ValueObject ISBN {
+            int gs2
+            int group
+            int registrant
+            int publication
+            int check
+            * @ISBN ^create(String isbn);
+        }
+        enum OrderState {
+            ACCEPTED, FULFILLED, DELIVERED, CLOSED
+        }
+        ValueObject Deal {
+            - @Book book
+            - Money price
+        }
+        ValueObject Money {
+            int amount
+            - @Currency currency
+        }
+        enum Currency {
+            EURO, BITCOIN
+        }
+    }
+    Aggregate Salesperson {
+        Entity SalesPerson {
+            String name
+            * void acceptOrder(@Customer customer, @Book book);
+            * void fulfillOrder(@Deal deal, @Order order);
+            * void recordDelivery(@Order order);
+            * void requestPayment(@Order order);
+            * void closeOrder(@Order order);
+            -- "looks up >" @Customer
+            -- "creates new >" @Customer
+            -- "creates new >" @Order
+            -- "fulfills >" @Order
+            -- "requests deal >" @DealFindingService
+        }
+    }
+    Aggregate Customer {
+        Entity Customer {
+            aggregateRoot
+            - @ContactDetails contactDetails
+            * ^create(String ^email, String address);
+        }
+        ValueObject ContactDetails {
+            - @Email ^email
+            - @Address address
+        }
+        ValueObject Email {
+            String user
+            String domain
+        }
+        ValueObject Address {
+            String street
+            int houseNumber
+            String city
+        }
+    }
+}
+
+BoundedContext DealFindingContext implements DealFindingDomain {
+    domainVisionStatement = "Finding best book deal at online retailers"
+}
+
+BoundedContext PaymentContext implements PaymentDomain {
+    domainVisionStatement = "Administration and management of payments"
+}
+
+Domain EasyBooks {
+    Subdomain OrderManagementDomain {
+        type = SUPPORTING_DOMAIN
+    }
+
+    Subdomain PaymentDomain {
+        type = GENERIC_SUBDOMAIN
+    }
+
+    Subdomain DealFindingDomain {
+        type = CORE_DOMAIN
+    }
+
+}
+
